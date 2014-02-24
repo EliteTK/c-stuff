@@ -1,3 +1,5 @@
+// I don't remember ever writing this. I think this is copied straight from K&R.
+
 #include<stdio.h>
 #include<stdlib.h>
 
