@@ -1,3 +1,5 @@
+// A program which was meant to clone itself, Proved to be a lot more difficult than it
+// at first seemed. - Clearly unfinished.
 #include<stdio.h>
 
 int main ( int argc, char *argv[] ) {

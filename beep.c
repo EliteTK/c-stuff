@@ -1,3 +1,4 @@
+// What is there to say? This beeps a bunch.
 #include <stdio.h>
 
 main () {

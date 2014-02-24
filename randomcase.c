@@ -1,3 +1,5 @@
+// Randomises the cases of letters. An IRC in joke from when I found out about the C+=
+// project. (Letter equality)
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>

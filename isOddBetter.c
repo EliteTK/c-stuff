@@ -1,3 +1,7 @@
+// Trying to see the differences between assembly created using different odd checks.
+// This taught me that the compiler is less stupid than I thought it was. The final test
+// is ommited from this directory because it involved two cluttery small files. But it
+// proved that the compiler does not automatically do odd checks the faster way.
 #include<stdio.h>
 
 _Bool isOdd( int );

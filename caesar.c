@@ -1,3 +1,4 @@
+// This is the beginning of a caesar cipher program. Never got anywhere with it though.
 #include<stdio.h>
 
 int main ( int argc, char *argv[] ) {

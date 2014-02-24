@@ -1,3 +1,5 @@
+// In collaboration with clone.c this was meant to turn clone.c's code into something I
+// could paste back into clone.c.
 #include<stdio.h>
 
 int main ( int argc, char *argv[] ) {

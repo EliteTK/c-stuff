@@ -1,3 +1,4 @@
+// Your guess is as good as mine. Possibly something to do with GNU Getline though...
 #include<stdio.h>
 #include<stdlib.h>
 

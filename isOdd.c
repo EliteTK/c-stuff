@@ -1,3 +1,4 @@
+// Refer to isOddBetter.c for info.
 #include<stdio.h>
 
 _Bool isOdd( int );

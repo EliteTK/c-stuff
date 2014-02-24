@@ -1,3 +1,6 @@
+// This is a brainfuck to C parser. It outputs files that can be directly compiled by a
+// C compiler.
+
 // WARNING: THIS PROGRAM PRODUCES CODE THAT ALLOWS UNRESTRICTED MEMORY ACCESS.
 // USE AT YOUR OWN RISK!!!!!!!!!!!!
 // This program takes input from stdin and outputs on stdout and stderr (for errors)

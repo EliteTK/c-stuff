@@ -1,3 +1,4 @@
+// A total mess of attempts at socket programming. (Relatively successful.)
 #include<stdio.h>
 #include<string.h>
 #include<sys/socket.h>
