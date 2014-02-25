@@ -18,7 +18,13 @@ int main( void ) {
     }
 
     int i, ii, iii;
-    for ( iii = 0; iii < 768 / 2; iii++ ) {
+    for ( iii = 0; iii < 768 / 3; iii++ ) {
+        for ( i = 0; i < 1024; i++ ) {
+            fputc(255, fbp);
+            fputc(0, fbp);
+            fputc(0, fbp);
+            fputc(255, fbp);
+        }
         for ( i = 0; i < 1024; i++ ) {
             fputc(0, fbp);
             fputc(255, fbp);
@@ -26,8 +32,10 @@ int main( void ) {
             fputc(255, fbp);
         }
         for ( i = 0; i < 1024; i++ ) {
-            for ( ii = 0; ii < 4; ii++ )
-                fputc(0, fbp);
+            fputc(0, fbp);
+            fputc(0, fbp);
+            fputc(255, fbp);
+            fputc(255, fbp);
         }
     }
 
