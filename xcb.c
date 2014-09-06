@@ -1,4 +1,5 @@
-#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <xcb/xcb.h>
 
 int main(int argc, char **argv)
@@ -17,7 +18,7 @@ int main(int argc, char **argv)
                 {10, 10}
         };
 
-        xcb_segment_t segments[] {
+        xcb_segment_t segments[] = {
                 {100, 10, 140, 30},
                 {110, 25, 130, 60}
         };
@@ -34,27 +35,23 @@ int main(int argc, char **argv)
 
         xcb_connection_t *connection = xcb_connect(NULL, NULL);
 
-        const xcb_setup_t *setup = xcb_get_setup(connection);
-        xcb_screen_t *screen = xcb_setup_roots_iterator(setup).data;
+        xcb_screen_t *screen = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
 
         xcb_drawable_t window = screen->root;
         xcb_gcontext_t foreground = xcb_generate_id(connection);
-        uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
-        uint32_t values[2] = {
-                screen->black_pixel,
-                0
-        };
+        uint32_t       mask = XCB_GC_FOREGROUND | XCB_GC_GRAPHICS_EXPOSURES;
+        uint32_t       values[2] = { screen->black_pixel, 0};
 
         xcb_create_gc(connection, foreground, window, mask, values);
 
-        mask = XCB_CW_BLACK_PIXEL | XCB_CW_EVENT_MASK;
-        values = {
-                screen->white_pixel,
+        window = xcb_generate_id(connection);
 
+        mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
+        values[0] = screen->white_pixel;
+        values[1] = XCB_EVENT_MASK_EXPOSURE;
 
-        xcb_window_t window = xcb_generate_id(connection);
         xcb_create_window(connection,
-                        XCB_COPY_FROM_PARENT,
+                        screen->root_depth,
                         window,
                         screen->root,
                         0, 0,
@@ -62,13 +59,52 @@ int main(int argc, char **argv)
                         10,
                         XCB_WINDOW_CLASS_INPUT_OUTPUT,
                         screen->root_visual,
-                        0, NULL);
+                        mask, values);
 
         xcb_map_window(connection, window);
-
         xcb_flush(connection);
 
-        pause();
+        printf("Window mapped.\n");
+
+        xcb_generic_event_t *event;
+        while ((event = xcb_wait_for_event(connection))) {
+                printf("We're waiting.\n");
+                switch (event->response_type & ~0x80) {
+                case XCB_EXPOSE:
+                        printf("Expose event.\n");
+                        xcb_poly_point(connection,
+                                        XCB_COORD_MODE_ORIGIN,
+                                        window,
+                                        foreground,
+                                        4, points);
+                        xcb_poly_line(connection,
+                                        XCB_COORD_MODE_PREVIOUS,
+                                        window,
+                                        foreground,
+                                        4, polyline);
+                        xcb_poly_segment(connection,
+                                        window,
+                                        foreground,
+                                        2, segments);
+                        xcb_poly_rectangle(connection,
+                                        window,
+                                        foreground,
+                                        2, rectangles);
+                        xcb_poly_arc(connection,
+                                        window,
+                                        foreground,
+                                        2, arcs);
+                        xcb_flush(connection);
+
+                        break;
+                default:
+                        break;
+                }
+
+                free(event);
+        }
+
+        printf("We did derp.\n");
 
         xcb_disconnect(connection);
 
