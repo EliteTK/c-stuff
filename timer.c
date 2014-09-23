@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 unsigned long long int get_seconds(char *);
 
 void usage(char *cmd)
 {
 	printf("Usage:\n"
-		   "	%s <n>{s,m,h,D,M,Y} ...\n", cmd);
+		   "\t%s <n>{s,m,h,D,M,Y} ...\n", cmd);
 }
 
 int main(int argc, char **argv)
@@ -21,8 +22,7 @@ int main(int argc, char **argv)
 
 	unsigned long long int total_seconds = 0;
 
-	int i;
-	for (i = 1; i < argc; i++)
+	for (int i = 1; i < argc; i++)
 		total_seconds += get_seconds(argv[i]);
 
 	printf("Total time: %llu second(s).\nStarted at: %d\n", total_seconds, time(NULL));
@@ -59,7 +59,7 @@ unsigned long long int get_seconds(char *code)
 	}
 
 	char value[length + 1];
-	strcpy(value, code);
+	strncpy(value, code, length + 1);
 
 	value[length - 1] = '\0';
 
