@@ -1,7 +1,14 @@
-// Trying to see the differences between assembly created using different odd checks.
-// This taught me that the compiler is less stupid than I thought it was. The final test
-// is ommited from this directory because it involved two cluttery small files. But it
-// proved that the compiler does not automatically do odd checks the faster way.
+/*
+ * Copyright (C) 2014  Tomasz Kramkowski <tk@the-tk.com>
+ *
+ * This program is free software. It is licensed under version 3 of the
+ * GNU General Public License.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ */
+
+// Trying to see how different ways of odd checking compile into source.
 #include<stdio.h>
 
 _Bool isOdd( int );

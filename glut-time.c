@@ -1,3 +1,5 @@
+// I can't take full credit for this old GLUT test.
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <ctype.h>

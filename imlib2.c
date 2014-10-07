@@ -1,3 +1,5 @@
+// Imlib2 stuff which I think I copied from somewhere.
+
 #include <Imlib2.h>
 #include <X11/Xlib.h>
 #include <stdbool.h>

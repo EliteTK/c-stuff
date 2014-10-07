@@ -1,3 +1,13 @@
+/*
+ * Copyright (C) 2014  Tomasz Kramkowski <tk@the-tk.com>
+ *
+ * This program is free software. It is licensed under version 3 of the
+ * GNU General Public License.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ */
+
 // A total mess of attempts at socket programming. (Relatively successful.)
 #include<stdio.h>
 #include<string.h>

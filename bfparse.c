@@ -1,9 +1,20 @@
-// This is a brainfuck to C parser. It outputs files that can be directly compiled by a
-// C compiler.
-
-// WARNING: THIS PROGRAM PRODUCES CODE THAT ALLOWS UNRESTRICTED MEMORY ACCESS.
-// USE AT YOUR OWN RISK!!!!!!!!!!!!
-// This program takes input from stdin and outputs on stdout and stderr (for errors)
+/*
+ * Copyright (C) 2014  Tomasz Kramkowski <tk@the-tk.com>
+ *
+ * This program is free software. It is licensed under version 3 of the
+ * GNU General Public License.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ *
+ *
+ * This is a brainfuck to C parser. It outputs files that can be directly compiled by a
+ * C compiler.
+ *
+ * WARNING: THIS PROGRAM PRODUCES CODE THAT ALLOWS UNRESTRICTED MEMORY ACCESS.
+ * USE AT YOUR OWN RISK!!!!!!!!!!!!
+ * This program takes input from stdin and outputs on stdout and stderr (for errors)
+ */
 
 #include<stdio.h>
 

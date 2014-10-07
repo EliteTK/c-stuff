@@ -1,3 +1,5 @@
+// Some old follow-along for a tutorial for GTK
+
 #include<gtk/gtk.h>
 
 gint count = 0;

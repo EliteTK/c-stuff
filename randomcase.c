@@ -1,5 +1,15 @@
-// Randomises the cases of letters. An IRC in joke from when I found out about the C+=
-// project. (Letter equality)
+/*
+ * String letter case randomiser.
+ *
+ * Copyright (C) 2014  Tomasz Kramkowski <tk@the-tk.com>
+ *
+ * This program is free software. It is licensed under version 3 of the
+ * GNU General Public License.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see [http://www.gnu.org/licenses/].
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
