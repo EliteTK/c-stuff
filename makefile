@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror -Wpedantic -O2 -std=gnu11
+CFLAGS = -Wall -Wextra -Wpedantic -O2 -std=gnu11
 
 PREFIX = /usr
 BINDIR = /bin
