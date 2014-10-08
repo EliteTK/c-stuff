@@ -1,4 +1,4 @@
-CFLAGS = -O2 -std=gnu11
+CFLAGS = -Wall -Werror -Wpedantic -O2 -std=gnu11
 
 PREFIX = /usr
 BINDIR = /bin
@@ -22,3 +22,6 @@ install : $(DESTDIR)$(PREFIX)$(BINDIR)/$(target)
 
 uninstall :
 	rm "$(DESTDIR)$(PREFIX)$(BINDIR)/$(target)"
+
+clean :
+	find . -mindepth 1 -maxdepth 1 -executable -type f -delete
