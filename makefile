@@ -4,7 +4,7 @@ PREFIX = /usr
 BINDIR = /bin
 INSPATH = $(DESTDIR)$(PREFIX)$(BINDIR)
 
-.PHONY : all install/% uninstall/%
+.PHONY : all install uninstall
 
 all:
 	@echo 'Error, target not specified.'
