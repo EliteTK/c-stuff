@@ -2,5 +2,7 @@
 !*.c
 !*.h
 !LICENSE
+!LICENSE_HEADER
+!prefix_header
 !README.md
 !makefile

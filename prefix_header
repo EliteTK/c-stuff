@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+
+for file in "$@"; do
+	echo "Processing $file"
+	cat "LICENSE_HEADER" "$file" >"${file}.LICENSE_HEADER"
+	mv "${file}.LICENSE_HEADER" "$file"
+done

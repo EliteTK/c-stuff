@@ -24,4 +24,4 @@ uninstall :
 	rm "$(DESTDIR)$(PREFIX)$(BINDIR)/$(target)"
 
 clean :
-	find . -mindepth 1 -maxdepth 1 -executable -type f -delete
+	find . -mindepth 1 -maxdepth 1 -executable -type f ! -name "prefix_header" -delete
