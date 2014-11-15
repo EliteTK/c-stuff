@@ -14,8 +14,9 @@
 
 char *capitalise(char *string)
 {
+	size_t length = strlen(string);
 	bool last_sep = true; /* Nothing is a separator too. */
-	for (int i = 0; i < strlen(string); i++) {
+	for (unsigned i = 0; i < length; i++) {
 		if (isalpha(string[i])) {
 			string[i] = last_sep ? toupper(string[i]) : tolower(string[i]);
 			last_sep = false;
