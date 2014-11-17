@@ -61,12 +61,6 @@ void gol_random(Gol *const gol, unsigned const int seed)
 		gol->buffers[gol->front][i] = rand() < 0.5 * ((double)RAND_MAX + 1.0);
 }
 
-static uint32_t gol_clamp(const uint32_t pos, const uint32_t max) {
-	return pos < 0 ? pos + max : pos % max;
-}
-
-static uint32_t gol_resolve_f(const Gol *const gol, 
-
 static uint8_t gol_neighbours(Gol *const gol, const uint32_t x, const uint32_t y)
 {
 	uint8_t neighbours = 0;
@@ -183,4 +177,3 @@ int main(int argc, char **argv)
 	}
 	return 0;
 }
-
