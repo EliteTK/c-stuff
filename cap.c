@@ -12,11 +12,10 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-char *capitalise(char *string)
+char *capitalise(char *string, size_t size)
 {
-	size_t length = strlen(string);
 	bool last_sep = true; /* Nothing is a separator too. */
-	for (unsigned i = 0; i < length; i++) {
+	for (size_t i = 0; i < size; i++) {
 		if (isalpha(string[i])) {
 			string[i] = last_sep ? toupper(string[i]) : tolower(string[i]);
 			last_sep = false;
@@ -28,7 +27,7 @@ char *capitalise(char *string)
 
 int main(void)
 {
-	char string[] = "thIs iS MEANT to Be some Kind OF tEsT strinG?\n";
-	printf(capitalise(string));
-	return true;
+	char string[] = "thIs iS MEANT to Be some Kind OF tEsT strinG?!.-+=#'; +-'#~@\n";
+	printf("%s", capitalise(string, strlen(string)));
+	return 0;
 }

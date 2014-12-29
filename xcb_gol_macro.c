@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <xcb/xcb.h>
 #include <xcb/xcb_image.h>
@@ -114,6 +115,9 @@ int main(int argc, char **argv)
 			XCB_WINDOW_CLASS_INPUT_OUTPUT,
 			screen->root_visual,
 			mask, values);
+	xcb_change_property(connection, XCB_PROP_MODE_REPLACE, window,
+			XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8,
+			strlen(argv[0]), argv[0]);
 
 	xcb_pixmap_t pixmap = xcb_generate_id(connection);
 	xcb_create_pixmap(connection,

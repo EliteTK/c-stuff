@@ -16,7 +16,7 @@
 #include <time.h>
 #include <unistd.h>
 
-unsigned long long int get_seconds(char *);
+unsigned long int get_seconds(char *);
 
 void usage(char *cmd)
 {
@@ -32,12 +32,12 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
-	unsigned long long int total_seconds = 0;
+	unsigned long int total_seconds = 0;
 
 	for (int i = 1; i < argc; i++)
 		total_seconds += get_seconds(argv[i]);
 
-	printf("Total time: %llu second(s).\nStarted at: %d\n", total_seconds, time(NULL));
+	printf("Total time: %lu second(s).\nStarted at: %d\n", total_seconds, time(NULL));
 
 	sleep(total_seconds);
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-unsigned long long int get_seconds(char *code)
+unsigned long int get_seconds(char *code)
 {
 	int length = strlen(code);
 	if (length < 2) {
@@ -75,5 +75,5 @@ unsigned long long int get_seconds(char *code)
 
 	value[length - 1] = '\0';
 
-	return strtoull(value, NULL, 10) * multiplier;
+	return strtoul(value, NULL, 10) * multiplier;
 }
