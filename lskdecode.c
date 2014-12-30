@@ -14,7 +14,7 @@
 int main(int argc, char **argv)
 {
 	unsigned char subst[4][256];
-	unsigned char lastval[] = {249, 20, 174, 199};
+	unsigned char lastval[] = {249, 20, 174, 199}; /* Offsets */
 
 	/* Generate substitution tables. */
 	for (int i = 0; i < 256; i++) {
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 		else lastval[3] -= 1;
 	}
 
-	/* decode */
+	/* Decode */
 	int c;
 	int pos = argc > 1 ? strtol(argv[1], NULL, 10) : 0;
 	while ((c = getchar()) != EOF) {
