@@ -4,6 +4,7 @@
 int main(void)
 {
 	char *input;
+
 	scanf("%ms", &input);
 
 	printf("%s", input);
