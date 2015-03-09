@@ -37,11 +37,11 @@ int main(int argc, char **argv)
 	for (int i = 1; i < argc; i++)
 		total_seconds += get_seconds(argv[i]);
 
-	printf("Total time: %lu second(s).\nStarted at: %d\n", total_seconds, time(NULL));
+	printf("Total time: %lu second(s).\nStarted at: %ld\n", total_seconds, time(NULL));
 
 	sleep(total_seconds);
 
-	printf("Ended at: %d\n", time(NULL));
+	printf("Ended at: %ld\n", time(NULL));
 
 	while (1) {
 		printf("Ring!\a\n");
