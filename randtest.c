@@ -27,7 +27,7 @@ static unsigned rand_to_max(unsigned max)
 
 	while ((random = rand()) == (double)RAND_MAX);
 
-	return random / (double)RAND_MAX * (double)(max + 1);
+	return random / (double)RAND_MAX * (double)max;
 }
 
 int main(int argc, char **argv)
