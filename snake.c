@@ -47,19 +47,6 @@ struct {
 	enum state state;
 } game;
 
-void init_game(void);
-void init_ncurses(void);
-void main_loop(void);
-
-int main(void)
-{
-	init_ncurses();
-	init_game();
-	main_loop();
-
-	return EXIT_SUCCESS;
-}
-
 void init_ncurses(void)
 {
 	initscr();
@@ -103,25 +90,6 @@ void init_game(void)
 	game.apple.y = game.height / 2 + 1;
 }
 
-void print_board(void);
-void poll_input(void);
-void simulate(void);
-
-void main_loop(void)
-{
-	while (true) {
-		poll_input();
-		if (!game.running)
-			break;
-		simulate();
-		if (!game.running)
-			break;
-		print_board();
-		usleep(100000);
-	}
-}
-
-
 void print_board(void)
 {
 	erase();
@@ -129,7 +97,7 @@ void print_board(void)
 	for (uint16_t i = game.snake.tail; i <= game.snake.head; i++) {
 		chtype ch;
 
-		if (!!(i % 2))
+		if (i % 2)
 			ch = ACS_BLOCK | COLOR_PAIR(C_SEGMENT0);
 		else
 			ch = ACS_BLOCK | COLOR_PAIR(C_SEGMENT1);
@@ -140,22 +108,6 @@ void print_board(void)
 	mvaddch(game.apple.y, game.apple.x, ACS_BLOCK | COLOR_PAIR(C_APPLE));
 
 	refresh();
-}
-
-void redirect(enum direction desired_dir);
-
-void poll_input(void)
-{
-	int c;
-
-	while ((c = getch()) != ERR)
-		switch (c) {
-		case 'h': redirect(D_LEFT); break;
-		case 'j': redirect(D_DOWN); break;
-		case 'k': redirect(D_UP); break;
-		case 'l': redirect(D_RIGHT); break;
-		case 'q': game.running = false; break;
-		}
 }
 
 void redirect(enum direction desired_dir)
@@ -186,6 +138,20 @@ void redirect(enum direction desired_dir)
 	game.snake.direction = desired_dir;
 }
 
+void poll_input(void)
+{
+	int c;
+
+	while ((c = getch()) != ERR)
+		switch (c) {
+		case 'h': redirect(D_LEFT); break;
+		case 'j': redirect(D_DOWN); break;
+		case 'k': redirect(D_UP); break;
+		case 'l': redirect(D_RIGHT); break;
+		case 'q': game.running = false; break;
+		}
+}
+
 inline uint16_t rand_to_max(uint16_t max)
 {
 	double random;
@@ -194,7 +160,14 @@ inline uint16_t rand_to_max(uint16_t max)
 	return random / (double)RAND_MAX * (double)max;
 }
 
-bool part_of_snake(uint16_t x, uint16_t y);
+bool part_of_snake(uint16_t x, uint16_t y)
+{
+	for (uint16_t i = game.snake.tail; i != game.snake.head; i++)
+		if (game.snake.segments[i].x == x && game.snake.segments[i].y == y)
+			return true;
+
+	return false;
+}
 
 void replace_apple(void)
 {
@@ -256,11 +229,25 @@ void simulate(void)
 	game.snake.tail++;
 }
 
-bool part_of_snake(uint16_t x, uint16_t y)
+void main_loop(void)
 {
-	for (uint16_t i = game.snake.tail; i != game.snake.head; i++)
-		if (game.snake.segments[i].x == x && game.snake.segments[i].y == y)
-			return true;
+	while (true) {
+		poll_input();
+		if (!game.running)
+			break;
+		simulate();
+		if (!game.running)
+			break;
+		print_board();
+		usleep(100000);
+	}
+}
 
-	return false;
+int main(void)
+{
+	init_ncurses();
+	init_game();
+	main_loop();
+
+	return EXIT_SUCCESS;
 }
