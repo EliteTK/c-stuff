@@ -143,7 +143,7 @@ void redirect(enum direction desired_dir)
 	if (desired_dir == game.snake.direction)
 		return;
 
-	if (current->x == previous->x)
+	if (current->x == previous->x) {
 		if (current->y > previous->y) {
 			if (desired_dir == D_UP)
 				return;
@@ -151,7 +151,7 @@ void redirect(enum direction desired_dir)
 			if (desired_dir == D_DOWN)
 				return;
 		}
-	else if (current->y == previous->y)
+	} else if (current->y == previous->y) {
 		if (current->x > previous->x) {
 			if (desired_dir == D_LEFT)
 				return;
@@ -159,6 +159,7 @@ void redirect(enum direction desired_dir)
 			if (desired_dir == D_RIGHT)
 				return;
 		}
+	}
 
 	game.snake.direction = desired_dir;
 }
