@@ -53,32 +53,33 @@ int main(int argc, char **argv)
 		c = toupper(c);
 
 		if (guessed[c - 'A'])
-			continue;
+			goto print_state;
 
 		if (!in_secret[c - 'A']) {
 			bad_guesses++;
-			printf("Wrong!");
-			continue;
+			printf("Wrong!\n");
+			goto print_state;
 		}
 
 		guessed[c - 'A'] = true;
 
+		for (unsigned i = 0; i < ALPHABET_CHARS; i++)
+			if (in_secret[i] && !guessed[i])
+				goto print_state;
+
+		state = WIN;
+
+		break;
+print_state:
 		for (size_t i = 0; i < length; i++)
 			if (isalpha(secret[i]) && !guessed[secret[i] - 'A'])
 				putchar('_');
 			else
 				putchar(secret[i]);
 		putchar('\n');
+		printf("You have %d guesses left.\n", MAX_GUESS - bad_guesses);
 
-		for (unsigned i = 0; i < ALPHABET_CHARS; i++)
-			if (in_secret[i] && !guessed[i])
-				goto cont;
-
-		state = WIN;
-
-		break;
-cont:
-		if (bad_guesses > MAX_GUESS) {
+		if (bad_guesses >= MAX_GUESS) {
 			state = LOSS;
 			break;
 		}
