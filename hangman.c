@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 		state = WIN;
 
 		break;
-cont:;
+cont:
 		if (bad_guesses > MAX_GUESS) {
 			state = LOSS;
 			break;
