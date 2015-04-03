@@ -15,13 +15,13 @@ int main(int argc, char **argv)
 	size_t keylength, textlength;
 
 	if (argc != 4) {
-		fprintf(stderr, "Usage: %s <key> <offset> <ciphertext>\n", argv[0]);
+		fprintf(stderr, "Usage: %s <offset> <ciphertext> <key>\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 
-	key = argv[1];
-	offset = strtol(argv[2], NULL, 10);
-	ciphertext = argv[3];
+	offset = strtol(argv[1], NULL, 10);
+	ciphertext = argv[2];
+	key = argv[3];
 
 	preprocess(key);
 	preprocess(ciphertext);

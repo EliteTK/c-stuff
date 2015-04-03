@@ -14,119 +14,118 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define Q ('Q'-'A')
 
-typedef struct vec2 {
-    int x;
-    int y;
-} Vec2;
+#define CTOI(c) ((c) - 'A')
+#define ITOC(c) ((c) + 'A')
+
+struct vec2 {
+	int x;
+	int y;
+};
 
 int increinc(int *);
-void allupper(char *);
+void preprocess(char *);
 void genkey(char *, char *);
-Vec2 *newVec2(const int, const int);
+struct vec2 *newVec2(const int, const int);
 
 int main(int argc, char **argv)
 {
-    int x, y, c=0;
+	int x, y, c = 0, i;
+	char trfullkey[26], blfullkey[26], *trkey, *blkey, *cipher;
+	struct vec2 trtable[25], bltable[25];
 
-    if(argc!=4){
-        printf("Usage: %s <key1> <key2> <cipher>", *argv);
-        exit(1);
-    }
+	if(argc!=4){
+		printf("Usage: %s <key1> <key2> <cipher>", *argv);
+		exit(1);
+	}
 
-    printf("%s, %s ", *(argv+1), *(argv+2));
+	printf("%s, %s ", *(argv+1), *(argv+2));
 
-    char *trkey = *(argv+1);
-    allupper(trkey);
-    char *trfullkey = malloc(26);
-    genkey(trkey, trfullkey);
+	trkey = argv[1];
+	preprocess(trkey);
+	genkey(trkey, trfullkey);
 
-    char *blkey = *(argv+2);
-    allupper(blkey);
-    char *blfullkey = malloc(26);
-    genkey(blkey, blfullkey);
+	blkey = argv[2];
+	preprocess(blkey);
+	genkey(blkey, blfullkey);
 
-    char *cipher = *(argv+3);
-    allupper(cipher);
+	cipher = argv[3];
+	preprocess(cipher);
 
-    int i=0;
-    Vec2 *trtable[25];
-    for(x=0; x<5; x++)
-        for(y=0; y<5; y++)
-            trtable[trfullkey[i++]-'A'] = newVec2(x, y);
-    free(trfullkey);
+	i = 0;
+	for(x=0; x<5; x++)
+		for(y=0; y<5; y++) {
+			trtable[CTOI(trfullkey[i])].x = x;
+			trtable[CTOI(trfullkey[i])].y = y;
+			i++;
+		}
 
-    i = 0;
-    Vec2 *bltable[25];
-    for(x=0; x<5; x++)
-        for(y=0; y<5; y++)
-            bltable[blfullkey[i++]-'A'] = newVec2(x, y);
-    free(blfullkey);
+	i = 0;
+	for(x=0; x<5; x++)
+		for(y=0; y<5; y++) {
+			bltable[CTOI(blfullkey[i])].x = x;
+			bltable[CTOI(blfullkey[i])].y = y;
+			i++;
+		}
 
-    char basetable[5][5];
-    for(x=0; x<5; x++)
-        for(y=0; y<5; y++){
-            if(c==Q)
-                c++;
-            basetable[x][y] = 'A' + c++;
-        }
 
-    for(i=0; i<strlen(cipher)/2; i++){
-        char c1 = cipher[2*i];
-        char c2 = cipher[2*i+1];
+	char basetable[5][5];
+	for (x = 0; x < 5; x++)
+		for (y = 0; y < 5; y++){
+			if (c == Q)
+				c++;
+			basetable[x][y] = 'A' + c++;
+		}
 
-        putchar(basetable[trtable[c1-'A']->x][bltable[c2-'A']->y]);
-        putchar(basetable[bltable[c2-'A']->x][trtable[c1-'A']->y]);
-    }
-    putchar('\n');
+	for(size_t i = 0; i < strlen(cipher) / 2; i++){
+		char c1 = cipher[2*i];
+		char c2 = cipher[2*i+1];
 
-    for(i=0; i++; i<25){
-        free(trtable[i]);
-        free(bltable[i]);
-    }
+		putchar(basetable[trtable[CTOI(c1)].x][bltable[CTOI(c2)].y]);
+		putchar(basetable[bltable[CTOI(c2)].x][trtable[CTOI(c1)].y]);
+	}
+	putchar('\n');
 
-    return 0;
+	return EXIT_SUCCESS;
 }
 
-int increinc(int *num)
+inline int increinc(int *num)
 {
-    (*num)++;
-    return (*num)++;
+	(*num)++;
+	return (*num)++;
 }
 
-void allupper(char *input)
+void preprocess(char *str)
 {
-    int i;
-    for(i=0; i<strlen(input); i++)
-        if(isalpha(input[i]))
-            input[i]=toupper(input[i]);
+	char *src = str, *dest = str;
+
+	while (*src != '\0') {
+		if (isalpha(*src))
+			*(dest++) = toupper(*src);
+		src++;
+	}
+
+	*(++dest) = '\0';
 }
 
 void genkey(char *input, char *output)
 {
-    int dict[26];
-    memset(dict, 0, 26*sizeof(int));
+	bool dict[26] = {0};
+	int ii = 0;
 
-    int i, outpt = 0;
-    for(i=0; i<strlen(input); i++){
-        if(!dict[input[i]-'A']){
-            output[outpt++]=input[i];
-        }
-        dict[input[i]-'A'] += 1;
-    }
+	for (size_t i = 0; i < strlen(input); i++) {
+		if (!dict[CTOI(input[i])]) {
+			output[ii++] = input[i];
+			dict[CTOI(input[i])] = true;
+		}
+	}
 
-    for(i=0; i<26; i++)
-        if(!dict[i] && i!=Q)
-            output[outpt++]=i+'A';
-    output[outpt]='\0';
-}
+	for (unsigned i = 0; i < 26; i++)
+		if (!dict[i] && i != Q)
+			output[ii++] = ITOC(i);
 
-Vec2 *newVec2(const int x, const int y)
-{
-    Vec2 *v = malloc(sizeof(Vec2));
-    v->x = x;
-    v->y = y;
-    return v;
+	output[ii]='\0';
 }
