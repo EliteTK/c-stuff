@@ -25,7 +25,7 @@ help:
 
 
 $(DESTDIR)$(bindir)/%: %
-	$(INSTALL) $^ $(DESTDIR)$(bindir)
+	$(INSTALL) $^ $(DESTDIR)$(bindir)/$(target)
 
 install: $(DESTDIR)$(bindir)/$(target)
 
