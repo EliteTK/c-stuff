@@ -7,7 +7,7 @@ else
 	CFLAGS += -O2
 endif
 
-INSTALL = install -m755
+INSTALL = install -Dm755
 
 prefix = /usr/local
 bindir = $(prefix)/bin
