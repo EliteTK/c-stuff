@@ -14,9 +14,14 @@ bindir = $(prefix)/bin
 
 all:
 	@echo 'Error, target not specified.'
+	@make --no-print-directory help
+
+help:
+	@echo 'Usage:'
 	@echo '	To compile <filename>.c	`make <filename>`'
 	@echo '	To install <filename>	`make target=<filename> install`'
 	@echo '	To uninstall <filename>	`make target=<filename> uninstall`'
+	@echo '	To clean up		`make clean`'
 
 
 $(DESTDIR)$(bindir)/%: %
