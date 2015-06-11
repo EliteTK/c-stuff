@@ -88,16 +88,38 @@ void clear_line(void)
 void print_time(unsigned long total_sec, bool show_colon)
 {
 	unsigned long years, months, days, hours, minutes, seconds;
-	char colon = show_colon ? ':' : ' ';
+	char colon = show_colon ? ':' : ' ', syears[128], smonths[16],
+	     sdays[16];
 
 	years = total_sec / SEC_YEAR;
 	total_sec %= SEC_YEAR;
 
+	if (years == 1)
+		snprintf(syears, sizeof syears, "%lu year, ", years);
+	else if (years > 1)
+		snprintf(syears, sizeof syears, "%lu years, ", years);
+	else
+		syears[0] = '\0';
+
 	months = total_sec / SEC_MONTH;
 	total_sec %= SEC_MONTH;
 
+	if (months == 1)
+		snprintf(smonths, sizeof smonths, "%lu month, ", months);
+	else if (months > 1)
+		snprintf(smonths, sizeof smonths, "%lu months, ", months);
+	else
+		smonths[0] = '\0';
+
 	days = total_sec / SEC_DAY;
 	total_sec %= SEC_DAY;
+
+	if (days == 1)
+		snprintf(sdays, sizeof sdays, "%lu day, ", days);
+	else if (days > 1)
+		snprintf(sdays, sizeof sdays, "%lu days, ", days);
+	else
+		sdays[0] = '\0';
 
 	hours = total_sec / SEC_HOUR;
 	total_sec %= SEC_HOUR;
@@ -111,8 +133,8 @@ void print_time(unsigned long total_sec, bool show_colon)
 	if (total_sec != 0)
 		error(1, 0, "An error occured during time formatting");
 
-	printf(" %luY %luM %luD %.2lu%c%.2lu%c%.2lu\r", years, months,
-			days, hours, colon, minutes, colon, seconds);
+	printf(" %s%s%s%.2lu%c%.2lu%c%.2lu\r", syears, smonths, sdays, hours,
+	       colon, minutes, colon, seconds);
 
 	if (fflush(stdout) != 0)
 		error(1, errno, "Failed to flush stdout");
