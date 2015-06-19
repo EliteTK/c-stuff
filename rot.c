@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014  Tomasz Kramkowski <tk@the-tk.com>
+ * Copyright (C) 2014 - 2015  Tomasz Kramkowski <tk@the-tk.com>
  *
  * This program is free software. It is licensed under version 3 of the
  * GNU General Public License.
@@ -16,7 +16,7 @@
 int main(int argc, char **argv)
 {
 	if (argc != 3) {
-		printf("Incorrect number of arguments.\n");
+		fprintf(stderr, "Usage: <text> <rotation>\a\n");
 		exit(1);
 	}
 

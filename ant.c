@@ -54,24 +54,24 @@ Ant *ant_new(uint16_t width, uint16_t height, char *actions)
 	return ant;
 }
 
-void ant_del(Ant *ant)
+static void ant_del(Ant *ant)
 {
 	free(ant->buffer);
 	free(ant->actions);
 	free(ant);
 }
 
-void inline ant_left(Ant *ant)
+static inline void ant_left(Ant *ant)
 {
 	ant->direction = ant->direction == 0 ? 3 : ant->direction - 1;
 }
 
-void inline ant_right(Ant *ant)
+static inline void ant_right(Ant *ant)
 {
 	ant->direction = ant->direction == 3 ? 0 : ant->direction + 1;
 }
 
-void inline ant_forward(Ant *ant)
+static inline void ant_forward(Ant *ant)
 {
 	if (ant->direction & 1) { /* EAST or WEST */
 		ant->posx = ant->direction == EAST ? ant->posx + 1 : ant->posx - 1;
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 	xcb_screen_t *screen = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
 
 	uint32_t mask = XCB_CW_BACK_PIXEL;
-	uint32_t values[] = {screen->black_pixel};
+	uint32_t values[2] = {screen->black_pixel};
 
 	xcb_drawable_t window = xcb_generate_id(connection);
 	xcb_create_window(connection,
@@ -194,5 +194,7 @@ int main(int argc, char **argv)
 
 		ant_simulate(ant);
 	}
+
+	ant_del(ant);
 	return 0;
 }
