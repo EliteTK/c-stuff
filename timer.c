@@ -30,6 +30,19 @@
 #define SEC_YEAR   31556940
 
 static const unsigned long interval_nsec = 1000000000 / 4;
+unsigned short term_width = 0; /* Maybe volatile? */
+
+void sigwinch(int sig) {
+	if (sig != SIGWINCH)
+		return;
+
+	struct winsize ws;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1)
+		error(1, errno, "Failed to get terminal width");
+
+	term_width = ws.ws_col;
+}
 
 unsigned long int get_seconds(char *code)
 {
@@ -67,15 +80,10 @@ unsigned long int get_seconds(char *code)
 
 void clear_line(void)
 {
-	struct winsize ws;
-
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1)
-		error(1, errno, "IOCTL failed");
-
-	if (ws.ws_col <= 1)
+	if (term_width <= 1)
 		return;
 
-	for (unsigned short i = 0; i < ws.ws_col - 1; i++)
+	for (unsigned short i = 0; i < term_width - 1; i++)
 		putchar(' ');
 
 	putchar('\r');
@@ -88,16 +96,38 @@ void clear_line(void)
 void print_time(unsigned long total_sec, bool show_colon)
 {
 	unsigned long years, months, days, hours, minutes, seconds;
-	char colon = show_colon ? ':' : ' ';
+	char colon = show_colon ? ':' : ' ', syears[128], smonths[16],
+	     sdays[16];
 
 	years = total_sec / SEC_YEAR;
 	total_sec %= SEC_YEAR;
 
+	if (years == 1)
+		snprintf(syears, sizeof syears, "%lu year, ", years);
+	else if (years > 1)
+		snprintf(syears, sizeof syears, "%lu years, ", years);
+	else
+		syears[0] = '\0';
+
 	months = total_sec / SEC_MONTH;
 	total_sec %= SEC_MONTH;
 
+	if (months == 1)
+		snprintf(smonths, sizeof smonths, "%lu month, ", months);
+	else if (months > 1)
+		snprintf(smonths, sizeof smonths, "%lu months, ", months);
+	else
+		smonths[0] = '\0';
+
 	days = total_sec / SEC_DAY;
 	total_sec %= SEC_DAY;
+
+	if (days == 1)
+		snprintf(sdays, sizeof sdays, "%lu day, ", days);
+	else if (days > 1)
+		snprintf(sdays, sizeof sdays, "%lu days, ", days);
+	else
+		sdays[0] = '\0';
 
 	hours = total_sec / SEC_HOUR;
 	total_sec %= SEC_HOUR;
@@ -111,8 +141,8 @@ void print_time(unsigned long total_sec, bool show_colon)
 	if (total_sec != 0)
 		error(1, 0, "An error occured during time formatting");
 
-	printf(" %luY %luM %luD %.2lu%c%.2lu%c%.2lu\r", years, months,
-			days, hours, colon, minutes, colon, seconds);
+	printf(" %s%s%s%.2lu%c%.2lu%c%.2lu\r", syears, smonths, sdays, hours,
+	       colon, minutes, colon, seconds);
 
 	if (fflush(stdout) != 0)
 		error(1, errno, "Failed to flush stdout");
@@ -130,6 +160,7 @@ int main(int argc, char **argv)
 	sigset_t sigset;
 	struct itimerspec its;
 	struct sigevent sev;
+	struct sigaction sigact;
 	timer_t timerid;
 
 	unsigned long total_seconds = 0;
@@ -142,6 +173,11 @@ int main(int argc, char **argv)
 
 	for (int i = 1; i < argc; i++)
 		total_seconds += get_seconds(argv[i]);
+
+	sigact.sa_handler = sigwinch;
+
+	if (sigaction(SIGWINCH, &sigact, NULL) != 0)
+		error(1, errno, "Unable to set SIGWINCH signal action");
 
 	sev.sigev_notify = SIGEV_SIGNAL;
 	sev.sigev_signo = SIGRTMIN;
@@ -166,6 +202,8 @@ int main(int argc, char **argv)
 
 	if (timer_settime(timerid, 0, &its, NULL) != 0)
 		error(1, errno, "Could not set timer");
+
+	sigwinch(SIGWINCH);
 
 	for (unsigned long i = 0; i < total_seconds; i++)
 		for (int ii = 0; ii < 4; ii++) {
