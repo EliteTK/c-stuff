@@ -165,6 +165,9 @@ int main(int argc, char **argv)
 
 	unsigned long total_seconds = 0;
 
+	if (!isatty(STDOUT_FILENO))
+		error(1, 0, "Error: stdout is not a tty");
+
 	if (argc < 2) {
 		printf("Not enough arguments.\n");
 		usage(argv[0]);
