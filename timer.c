@@ -169,7 +169,7 @@ int main(int argc, char **argv)
 		error(1, 0, "Error: stdout is not a tty");
 
 	if (argc < 2) {
-		printf("Not enough arguments.\n");
+		fprintf(stderr, "Not enough arguments.\n");
 		usage(argv[0]);
 		exit(1);
 	}
