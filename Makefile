@@ -23,7 +23,6 @@ help:
 	@echo '	To uninstall <filename>	`make target=<filename> uninstall`'
 	@echo '	To clean up		`make clean`'
 
-
 $(DESTDIR)$(bindir)/%: %
 	$(INSTALL) $^ $(DESTDIR)$(bindir)/$(target)
 
@@ -34,5 +33,7 @@ uninstall:
 
 clean:
 	find . -mindepth 1 -maxdepth 1 -executable -type f ! -name "prefix_header" -delete
+
+-include *.mk
 
 .PHONY : all install uninstall clean
