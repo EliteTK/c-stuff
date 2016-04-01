@@ -49,7 +49,7 @@ static int getrot(const char *str)
 	errno = 0;
 	val = strtol(str, &endptr, 10);
 	if (errno)
-		die("Invalid argument '%s': %s", str, strerror(errno));
+		die("Invalid argument '%s': %s\n", str, strerror(errno));
 	if (*endptr)
 		die("Invalid argument '%s'\n", str);
 
