@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 - 2015  Tomasz Kramkowski <tk@the-tk.com>
+ * Copyright (C) 2014 - 2016  Tomasz Kramkowski <tk@the-tk.com>
  *
  * This program is free software. It is licensed under version 3 of the
  * GNU General Public License.
